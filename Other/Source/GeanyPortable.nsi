@@ -217,8 +217,8 @@ Section "Main"
 	SetupPath:
 		ReadEnvStr $1 "PATH"
 		StrCpy $0 "$GTKDirectory\bin;$ProgramDirectory;$0;$1"
-			System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("PATH", "$0").r0'
-			System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("GTK_BASEPATH", "$GTKDirectory").r0'
+			System::Call 'Kernel32::SetEnvironmentVariable(t, t) i("PATH", "$0").r0'
+			System::Call 'Kernel32::SetEnvironmentVariable(t, t) i("GTK_BASEPATH", "$GTKDirectory").r0'
 	
 	;===Add fonts if requested:
 	;Code Courtesy wraithdu\ErikPilsits
