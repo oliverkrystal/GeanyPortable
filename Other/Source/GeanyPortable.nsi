@@ -84,7 +84,7 @@ SetDatablockOptimize On
 !include LogicLib.nsh ;portable fonts
 
 ;(Custom)
-!include GetWindowsVersion.nsh
+;!include GetWindowsVersion.nsh
 !include ReplaceInFileWithTextReplace.nsh
 !include ReadINIStrWithDefault.nsh
 !include ProcFunc.nsh
@@ -108,7 +108,6 @@ Var UseFonts
 Var AdditionalParameters
 Var ExecString
 Var GTKDirectory
-Var WindowsVersion
 Var MISSINGFILEORPATH
 Var ExistsFileChooser
 Var ExistsXBEL
@@ -135,6 +134,8 @@ Section "Main"
 		
 		;===CheckCurrentRunning
 			${GetProcessPath} "$ProgramExecutable" $0 ;GetProcessPath will return a 0 if the process doesn't exist
+			; MessageBox MB_OK '$ProgramExecutable | $0'
+			Abort
 				StrCpy $LaunchAndExit 'false'
 				StrCmp $0 0 PrepareGTK ;Process does not exist currently, proceed on course, good day 
 					StrCpy $LaunchAndExit 'true' ;process does exist and it may be ours.
