@@ -1,7 +1,4 @@
-
-<!-- saved from url=(0037)http://zer0dev.com/files/ProcFunc.nsh -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">/*
-_____________________________________________________________________________
+/*____________________________________________________________________________
 
                       Process Functions Header v2.2
 _____________________________________________________________________________
@@ -835,4 +832,3 @@ ${Execute} "[command]" "[working_dir]" $var
 	);
 
 ****************************************************************************/
-</pre></body></html>
