@@ -1,4 +1,4 @@
-;Copyright (C) 2007-2011 Oliver Krystal
+;Copyright (C) 2007-2012 Oliver Krystal
 ;Copyright (C) 2004-2008 John T. Haller
 ;Copyright (C) 2007-2008 Patrick Patience
 ;This app utilizes some of Erik Pilsits code for implementation of portable fonts.  Applicable copyrights apply. See http://portableapps.com/node/16003 for more information
@@ -26,7 +26,7 @@
 !define NAME "GeanyPortable"
 !define PORTABLEAPPNAME "Geany Portable"
 !define APPNAME "Geany"
-!define VER "1.9.0.0" ;increment for official release
+!define VER "1.10.0.0" ;increment for official release
 !define WEBSITE "PortableApps.com/GeanyPortable"
 !define DEFAULTEXE "Geany.exe"
 !define DEFAULTAPPDIR "Geany\bin"
@@ -133,51 +133,29 @@ Section "Main"
 		${ReadINIStrWithDefault} $PathAdditions "$EXEDIR\${NAME}.ini" "${NAME}" "PathAdditions" ""
 		${ReadINIStrWithDefault} $UseFonts "$EXEDIR\${NAME}.ini" "${NAME}" "AdditionalFonts" "false"
 		
-		${GetWindowsVersion} $WindowsVersion
-		StrCpy $WindowsVersion $WindowsVersion 2
-		
 		;===CheckCurrentRunning
 			${GetProcessPath} "$ProgramExecutable" $0 ;GetProcessPath will return a 0 if the process doesn't exist
 				StrCpy $LaunchAndExit 'false'
 				StrCmp $0 0 PrepareGTK ;Process does not exist currently, proceed on course, good day 
 					StrCpy $LaunchAndExit 'true' ;process does exist and it may be ours.
-				StrCmp $0 "$ProgramDirectory\$ProgramExecutable" PrepareGTK
-				;Process does exist, and is ours, so launch Geany with whatever
+				StrCmp $0 "$ProgramDirectory\$ProgramExecutable" PrepareGTK ;Process does exist, and is ours, so launch Geany with whatever
 				;the current Geany isn't ours and we should quit while ahead
 			;===Warn Another Instance
 				MessageBox MB_OK|MB_ICONINFORMATION `$(LauncherAlreadyRunning)`
 				Abort
 
-;General GTK Stuff.  Yes, 'Legacy' Common File support is implemented, though I don't know how far you'd get.
-	PrepareGTK:
-		StrCmp $WindowsVersion '95' GTKLegacy
-		StrCmp $WindowsVersion '98' GTKLegacy
-		StrCmp $WindowsVersion 'ME' GTKLegacy
-		StrCmp $WindowsVersion 'NT' GTKLegacy
-		
 	;=== CheckGTKDirectory:
+	PrepareGTK:
 		IfFileExists "$EXEDIR\App\${DEFAULTGTKDIR}\bin\${LibGTKDLLCheck}" "" CommonFiles
 			StrCpy $GTKDirectory "$EXEDIR\App\${DEFAULTGTKDIR}"
 			Goto CheckForFile
 
-	GTKLegacy:
-			;=== Check GTK directory
-			IfFileExists "$EXEDIR\App\GTKLegacy\bin\*.*" "" CommonFilesLegacy
-				StrCpy $GTKDirectory "$EXEDIR\App\GTKLegacy"
-				Goto CheckForFile
-	
 	CommonFiles:
 		${GetParent} "$EXEDIR" $0
 		IfFileExists "$0\CommonFiles\GTK\bin\*.*" "" GTKNotFound
 		StrCpy $GTKDirectory "$0\CommonFiles\GTK\"
 		Goto CheckForFile
-			
-	CommonFilesLegacy:
-		${GetParent} "$EXEDIR" $0
-		IfFileExists "$0\CommonFiles\GTKLegacy\bin\*.*" "" GTKNotFound
-		StrCpy $GTKDirectory "$0\CommonFiles\GTKLegacy"
-		Goto CheckForFile
-		
+
 	GTKNotFound:
 		StrCpy $MISSINGFILEORPATH $GTKDirectory
 		MessageBox MB_OK|MB_ICONEXCLAMATION `$(LauncherFileNotFound)`
