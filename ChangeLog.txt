@@ -1,0 +1,3 @@
+Geany Portable 0.21
+- Remove GTK Legacy Support
+- Convert to ANSI
