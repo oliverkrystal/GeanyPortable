@@ -1,7 +1,5 @@
 !macro CustomCodePreInstall	
-	ReadINIStr $9 "$INSTDIR\App\AppInfo\appinfo.ini" "Version" "PackageVersion"
-	StrCmp $9 "" "" +2
-	StrCpy $9 "9.9.9.9" ;never, ever try to upgrade a fresh install
+	${ReadINIStrWithDefault} $9 "$INSTDIR\App\AppInfo\appinfo.ini" "Version" "PackageVersion" "9.9.9.9"
 	WriteINIStr "$INSTDIR\Data\settings\GeanyPortableSettings.ini" "LastVersion" "UpdateFrom" "$9"
 		;===Check if we need to deal with nonsense
 		${VersionCompare} "$9" "0.20.0.0" $9 ;The reason for this code is because with the release of Geany 0.20 I changed how I was handling GTK.  This will update a user's GTK seamlessly
